@@ -1,0 +1,58 @@
+﻿<Window x:Class="ScriptEditor.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ScriptEditor"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="350" Width="525">
+    <Window.Resources>
+        <!-- パラメータリストを水平に並べる -->
+        <ControlTemplate x:Key="ParamList">
+            <StackPanel Orientation="Horizontal" IsItemsHost="True"></StackPanel>
+        </ControlTemplate>
+        <!-- パラメータリストの各項目 -->
+        <DataTemplate x:Key="Param" DataType="local:ScriptParameter">
+            <StackPanel Orientation="Horizontal" Margin="3,2">
+                <TextBlock Text="{Binding ParamName}" />
+                <TextBlock Text=":" Margin="2,0" />
+                <TextBox Text="{Binding Value}">
+                    <TextBox.Style>
+                        <Style TargetType="TextBox">
+                            <Style.Triggers>
+                                <!-- 普段はラベルに偽装する -->
+                                <Trigger Property="IsFocused" Value="False">
+                                    <Setter Property="BorderThickness" Value="0" />
+                                    <Setter Property="Cursor" Value="Arrow" />
+                                    <!-- ただのラベルではないことを示すためハイパーリンク風に
+                                         青字＋アンダーラインで装飾する -->
+                                    <Setter Property="TextDecorations" Value="Underline" />
+                                    <Setter Property="Foreground" Value="Blue" />
+                                </Trigger>
+                                <!-- マウスオーバー時に太字にする -->
+                                <MultiTrigger>
+                                    <MultiTrigger.Conditions>
+                                        <Condition Property="IsFocused" Value="False" />
+                                        <Condition Property="IsMouseOver" Value="True" />
+                                    </MultiTrigger.Conditions>
+                                    <Setter Property="FontWeight" Value="Bold" />
+                                </MultiTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBox.Style>
+                </TextBox>
+            </StackPanel>
+        </DataTemplate>
+    </Window.Resources>
+    <Grid>
+        <StackPanel>
+            <!-- パラメータリストを表示するItemsControl -->
+            <ItemsControl Template="{StaticResource ParamList}"
+                          ItemTemplate="{StaticResource Param}">
+                <local:ScriptParameter ParamName="パラメータ1" Value="にゃー" />
+                <local:ScriptParameter ParamName="パラメータ2" Value="にゃにゃー" />
+                <local:ScriptParameter ParamName="パラメータ3" Value="にゃにゃにゃー" />
+            </ItemsControl>
+        </StackPanel>
+    </Grid>
+</Window>
