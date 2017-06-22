@@ -1,2 +1,5 @@
-# excluded
-.vs
+# ignored name
+.vs/
+bin/
+obj/
+

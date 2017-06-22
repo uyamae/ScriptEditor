@@ -43,16 +43,59 @@
                 </TextBox>
             </StackPanel>
         </DataTemplate>
+        <!-- スクリプトコマンド１行分 -->
+        <DataTemplate x:Key="Command" DataType="local:ScriptCommand">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="{Binding CommandName}" Margin="3,2,6,2"/>
+                <ItemsControl Template="{StaticResource ParamList}"
+                              ItemTemplate="{StaticResource Param}"
+                              ItemsSource="{Binding Parameters}">
+                </ItemsControl>
+            </StackPanel>
+        </DataTemplate>
+        <!-- スクリプトコマンドリスト -->
+        <ControlTemplate x:Key="CommandList">
+            <StackPanel Orientation="Vertical" IsItemsHost="True">
+            </StackPanel>
+        </ControlTemplate>
+        <!-- スクリプトデータ -->
+        <DataTemplate x:Key="ScriptData" DataType="local:ScriptData">
+            <DockPanel>
+                <StackPanel Orientation="Horizontal"
+                            DockPanel.Dock="Top">
+                    <Label Content="{Binding ScriptId}"></Label>
+                    <Label Content="{Binding Description}"></Label>
+                </StackPanel>
+                <ListBox ItemTemplate="{StaticResource Command}"
+                         ItemsSource="{Binding CommandList}"
+                         SelectionMode="Multiple">
+                </ListBox>
+            </DockPanel>
+        </DataTemplate>
+        <!--  -->
     </Window.Resources>
+    <DockPanel>
+        <!-- パネルの左側にスクリプトリストを配置 -->
+        <ListBox ItemsSource="{Binding ScriptList}"
+                 DockPanel.Dock="Left"
+                 x:Name="ScriptList">
+            <ListBox.ItemTemplate>
+                <DataTemplate DataType="local:ScriptData">
+                    <TextBlock Text="{Binding ScriptId}" />
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <!-- パネルの中央に選択されたスクリプトを配置 -->
+        <ContentControl ContentTemplate="{StaticResource ScriptData}"
+                        Content="{Binding SelectedItem, ElementName=ScriptList}">
+            
+        </ContentControl>
+    </DockPanel>
+    <!--
     <Grid>
-        <StackPanel>
-            <!-- パラメータリストを表示するItemsControl -->
-            <ItemsControl Template="{StaticResource ParamList}"
-                          ItemTemplate="{StaticResource Param}">
-                <local:ScriptParameter ParamName="パラメータ1" Value="にゃー" />
-                <local:ScriptParameter ParamName="パラメータ2" Value="にゃにゃー" />
-                <local:ScriptParameter ParamName="パラメータ3" Value="にゃにゃにゃー" />
-            </ItemsControl>
-        </StackPanel>
+        <ContentControl ContentTemplate="{StaticResource ScriptData}">
+
+        </ContentControl>
     </Grid>
+    -->
 </Window>

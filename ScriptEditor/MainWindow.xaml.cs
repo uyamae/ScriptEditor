@@ -23,6 +23,10 @@ namespace ScriptEditor
         public MainWindow()
         {
             InitializeComponent();
+
+            Pack = ScriptPack.FromText(Properties.Resources.ScriptFile.Replace("\r\n", "\n"));
+            DataContext = Pack;
         }
+        public ScriptPack Pack { get; set; }
     }
 }
